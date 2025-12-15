@@ -1,0 +1,4 @@
+User logged in
+Error while connecting
+Unauthorized access detected
+Everything ok

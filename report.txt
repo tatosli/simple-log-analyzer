@@ -1,0 +1,4 @@
+User logged in
+[SUSPICIOUS] Error while connecting
+[SUSPICIOUS] Unauthorized access detected
+Everything ok

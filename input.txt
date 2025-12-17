@@ -1,4 +1,4 @@
-User logged in
-Error while connecting
-Unauthorized access detected
-Everything ok
+User login failed from 192.168.1.10
+GET /index.php?id=1 UNION SELECT password FROM users
+GET ../../etc/passwd
+Normal log entry

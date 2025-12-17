@@ -1,6 +1,6 @@
 Toplam satır: 4
-Şüpheli satır: 2
-Şüpheli oranı: %50.00
+Şüpheli satır: 3
 
-[SUSPICIOUS] Error while connecting
-[SUSPICIOUS] Unauthorized access detected
+[BRUTE_FORCE] User login failed from 192.168.1.10
+[SQL_INJECTION] GET /index.php?id=1 UNION SELECT password FROM users
+[PATH_TRAVERSAL] GET ../../etc/passwd

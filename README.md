@@ -8,6 +8,14 @@ A lightweight Python tool to analyze log files and detect suspicious entries.
 - Clean output report
 - No dependencies
 
-## Usage
+### Output Formats
+
+- txt : Human-readable report
+- json : Machine-readable structured output
+- csv : Spreadsheet-friendly format
+
+Example:
 ```bash
-python analyzer.py --input log.txt --output report.txt
+python main.py -i input.txt -o report.json -f json
+
+

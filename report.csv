@@ -1,0 +1,4 @@
+ip,attack_type,severity,log
+192.168.1.10,BRUTE_FORCE,MEDIUM,User login failed from 192.168.1.10
+N/A,SQL_INJECTION,HIGH,GET /index.php?id=1 UNION SELECT password FROM users
+N/A,PATH_TRAVERSAL,HIGH,GET ../../etc/passwd

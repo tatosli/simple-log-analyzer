@@ -9,32 +9,17 @@ def write_report(total, suspicious, output_file, output_format="txt"):
     else:
         write_txt(total, suspicious, output_file)
 
-
 def write_txt(total, suspicious, output_file):
-    high = 0
-    medium = 0
-
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(f"Toplam satır: {total}\n")
         f.write(f"Şüpheli satır: {len(suspicious)}\n\n")
 
         for item in suspicious:
+            f.write(f"Type: {item['type']}\n")
+            f.write(f"Severity: {item['severity']}\n")
             f.write(f"IP: {item['ip']}\n")
             f.write(f"Log: {item['line']}\n")
-
-            for match in item["matches"]:
-                f.write(f"  - {match['type']} | Severity: {match['severity']}\n")
-                if match["severity"] == "HIGH":
-                    high += 1
-                else:
-                    medium += 1
-
-            f.write("\n")
-
-        f.write("ÖZET:\n")
-        f.write(f"HIGH risk: {high}\n")
-        f.write(f"MEDIUM risk: {medium}\n")
-
+            f.write("-" * 40 + "\n")
 
 def write_json(total, suspicious, output_file):
     data = {
@@ -53,10 +38,9 @@ def write_csv(total, suspicious, output_file):
         writer.writerow(["ip", "attack_type", "severity", "log"])
 
         for item in suspicious:
-            for match in item["matches"]:
-                writer.writerow([
-                    item["ip"],
-                    match["type"],
-                    match["severity"],
-                    item["line"]
-                ])
+            writer.writerow([
+                item["ip"],
+                item["type"],
+                item["severity"],
+                item["line"]
+            ])

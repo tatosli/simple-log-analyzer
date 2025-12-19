@@ -1,4 +1,19 @@
-User login failed from 192.168.1.10
-GET /index.php?id=1 UNION SELECT password FROM users
-GET ../../etc/passwd
-Normal log entry
+192.168.1.10 - - [12/Dec/2025:10:15:32 +0300] "GET /index.php HTTP/1.1" 200 2345
+192.168.1.10 - - [12/Dec/2025:10:15:35 +0300] "POST /login.php HTTP/1.1" 302 512
+192.168.1.15 - - [12/Dec/2025:10:16:01 +0300] "POST /login.php HTTP/1.1" 401 412
+192.168.1.15 - - [12/Dec/2025:10:16:05 +0300] "POST /login.php HTTP/1.1" 401 412
+192.168.1.15 - - [12/Dec/2025:10:16:09 +0300] "POST /login.php HTTP/1.1" 401 412
+
+10.0.0.23 - - [12/Dec/2025:10:18:44 +0300] "GET /product.php?id=1 UNION SELECT username,password FROM users HTTP/1.1" 500 1024
+
+203.0.113.45 - - [12/Dec/2025:10:20:10 +0300] "GET /search.php?q=<script>alert(1)</script> HTTP/1.1" 200 845
+
+172.16.0.7 - - [12/Dec/2025:10:22:55 +0300] "GET /../../../../etc/passwd HTTP/1.1" 403 312
+
+Dec 12 10:25:01 server sshd[1234]: Failed password for root from 198.51.100.77 port 54321 ssh2
+Dec 12 10:25:04 server sshd[1234]: Failed password for root from 198.51.100.77 port 54322 ssh2
+Dec 12 10:25:08 server sshd[1234]: Failed password for root from 198.51.100.77 port 54323 ssh2
+
+Dec 12 10:30:14 server sshd[1300]: Accepted password for admin from 192.168.1.50 port 60022 ssh2
+
+192.168.1.99 - - [12/Dec/2025:10:35:22 +0300] "GET /images/logo.png HTTP/1.1" 200 10240

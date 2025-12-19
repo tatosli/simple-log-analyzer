@@ -1,24 +1,19 @@
 {
-  "total_lines": 4,
-  "suspicious_count": 3,
-  "entries": [
+  "total": 4,
+  "suspicious": [
     {
-      "type": "BRUTE_FORCE",
-      "severity": "MEDIUM",
-      "ip": "192.168.1.10",
-      "line": "User login failed from 192.168.1.10"
-    },
-    {
+      "ip": "UNKNOWN",
       "type": "SQL_INJECTION",
       "severity": "HIGH",
-      "ip": "N/A",
-      "line": "GET /index.php?id=1 UNION SELECT password FROM users"
+      "score": 5,
+      "line": "GET /index.php?id=1 UNION SELECT password FROM users\n"
     },
     {
+      "ip": "UNKNOWN",
       "type": "PATH_TRAVERSAL",
-      "severity": "HIGH",
-      "ip": "N/A",
-      "line": "GET ../../etc/passwd"
+      "severity": "MEDIUM",
+      "score": 4,
+      "line": "GET ../../etc/passwd\n"
     }
   ]
 }

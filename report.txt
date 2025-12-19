@@ -1,18 +1,9 @@
-Toplam satır: 4
-Şüpheli satır: 3
+Total lines: 19
+Suspicious lines: 1
 
-Type: BRUTE_FORCE
-Severity: MEDIUM
-IP: 192.168.1.10
-Log: User login failed from 192.168.1.10
-----------------------------------------
-Type: SQL_INJECTION
+IP: 198.51.100.77
+Type: SSH_BRUTE_FORCE
 Severity: HIGH
-IP: N/A
-Log: GET /index.php?id=1 UNION SELECT password FROM users
-----------------------------------------
-Type: PATH_TRAVERSAL
-Severity: HIGH
-IP: N/A
-Log: GET ../../etc/passwd
+Score: 30
+Log: 3 failed SSH logins within 60s
 ----------------------------------------

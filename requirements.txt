@@ -1,0 +1,12 @@
+# Core dependencies
+# (No external dependencies for basic functionality)
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Future dependencies (commented out for now)
+# requests>=2.31.0
+# pandas>=2.0.0
+# scikit-learn>=1.3.0
+# pyyaml>=6.0

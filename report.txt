@@ -1,9 +1,0 @@
-Total lines: 19
-Suspicious lines: 1
-
-IP: 198.51.100.77
-Type: SSH_BRUTE_FORCE
-Severity: HIGH
-Score: 30
-Log: 3 failed SSH logins within 60s
-----------------------------------------

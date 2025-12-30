@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Analysis Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header .timestamp {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .stat-card h3 {
+            color: #666;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-card.critical .value { color: #e74c3c; }
+        .stat-card.high .value { color: #e67e22; }
+        .stat-card.medium .value { color: #f39c12; }
+        .stat-card.safe .value { color: #27ae60; }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .chart-card h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        
+        .table-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .severity-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .severity-critical {
+            background: #fee;
+            color: #e74c3c;
+        }
+        
+        .severity-high {
+            background: #fef0e6;
+            color: #e67e22;
+        }
+        
+        .severity-medium {
+            background: #fef9e6;
+            color: #f39c12;
+        }
+        
+        .severity-low {
+            background: #e6fef0;
+            color: #27ae60;
+        }
+        
+        .ip-cell {
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .score-cell {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-state h2 {
+            color: #27ae60;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔒 Security Analysis Dashboard</h1>
+            <p class="timestamp">Generated: 2025-12-26 23:43:49</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Log Lines</h3>
+                <div class="value">47</div>
+            </div>
+            
+            <div class="stat-card critical">
+                <h3>Threats Detected</h3>
+                <div class="value">31</div>
+            </div>
+            
+            <div class="stat-card critical">
+                <h3>Critical Threats</h3>
+                <div class="value">10</div>
+            </div>
+            
+            <div class="stat-card high">
+                <h3>High Severity</h3>
+                <div class="value">13</div>
+            </div>
+            
+            <div class="stat-card medium">
+                <h3>Medium Severity</h3>
+                <div class="value">8</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Unique IPs</h3>
+                <div class="value">15</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Average Score</h3>
+                <div class="value">86.1</div>
+            </div>
+            
+            <div class="stat-card critical">
+                <h3>Max Score</h3>
+                <div class="value">120</div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h2>📊 Attack Types Distribution</h2>
+                <canvas id="attackTypesChart"></canvas>
+            </div>
+            
+            <div class="chart-card">
+                <h2>⚠️ Severity Levels</h2>
+                <canvas id="severityChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="table-card">
+            <h2>🔝 Top Attackers</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>IP Address</th>
+                        <th>Attack Count</th>
+                        <th>Percentage</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>1</td>
+                        <td class="ip-cell">45.33.32.156</td>
+                        <td>3</td>
+                        <td>9.7%</td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td class="ip-cell">66.42.58.99</td>
+                        <td>3</td>
+                        <td>9.7%</td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td class="ip-cell">198.51.100.99</td>
+                        <td>3</td>
+                        <td>9.7%</td>
+                    </tr>
+
+                    <tr>
+                        <td>4</td>
+                        <td class="ip-cell">89.248.167.131</td>
+                        <td>3</td>
+                        <td>9.7%</td>
+                    </tr>
+
+                    <tr>
+                        <td>5</td>
+                        <td class="ip-cell">77.72.82.20</td>
+                        <td>3</td>
+                        <td>9.7%</td>
+                    </tr>
+
+                    <tr>
+                        <td>6</td>
+                        <td class="ip-cell">123.45.67.89</td>
+                        <td>3</td>
+                        <td>9.7%</td>
+                    </tr>
+
+                    <tr>
+                        <td>7</td>
+                        <td class="ip-cell">10.0.0.23</td>
+                        <td>2</td>
+                        <td>6.5%</td>
+                    </tr>
+
+                    <tr>
+                        <td>8</td>
+                        <td class="ip-cell">203.0.113.45</td>
+                        <td>2</td>
+                        <td>6.5%</td>
+                    </tr>
+
+                    <tr>
+                        <td>9</td>
+                        <td class="ip-cell">172.16.0.7</td>
+                        <td>2</td>
+                        <td>6.5%</td>
+                    </tr>
+
+                    <tr>
+                        <td>10</td>
+                        <td class="ip-cell">151.80.31.103</td>
+                        <td>2</td>
+                        <td>6.5%</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="table-card">
+            <h2>🚨 All Detected Threats</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>IP Address</th>
+                        <th>Attack Type</th>
+                        <th>Severity</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>1</td>
+                        <td class="ip-cell">10.0.0.23</td>
+                        <td>Sql Injection</td>
+                        <td><span class="severity-badge severity-critical">CRITICAL</span></td>
+                        <td class="score-cell">100</td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td class="ip-cell">203.0.113.45</td>
+                        <td>Xss</td>
+                        <td><span class="severity-badge severity-high">HIGH</span></td>
+                        <td class="score-cell">80</td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td class="ip-cell">172.16.0.7</td>
+                        <td>Path Traversal</td>
+                        <td><span class="severity-badge severity-high">HIGH</span></td>
+                        <td class="score-cell">90</td>
+                    </tr>
+
+                    <tr>
+                        <td>4</td>
+                        <td class="ip-cell">45.33.32.156</td>
+                        <td>Command Injection</td>
+                        <td><span class="severity-badge severity-critical">CRITICAL</span></td>
+                        <td class="score-cell">100</td>
+                    </tr>
+
+                    <tr>
+                        <td>5</td>
+                        <td class="ip-cell">45.33.32.156</td>
+                        <td>Command Injection</td>
+                        <td><span class="severity-badge severity-critical">CRITICAL</span></td>
+                        <td class="score-cell">100</td>
+                    </tr>
+
+                    <tr>
+                        <td>6</td>
+                        <td class="ip-cell">104.20.10.50</td>
+                        <td>Command Injection</td>
+                        <td><span class="severity-badge severity-critical">CRITICAL</span></td>
+                        <td class="score-cell">100</td>
+                    </tr>
+
+                    <tr>
+                        <td>7</td>
+                        <td class="ip-cell">66.42.58.99</td>
+                        <td>Xxe</td>
+                        <td><span class="severity-badge severity-critical">CRITICAL</span></td>
+                        <td class="score-cell">95</td>
+                    </tr>
+
+                    <tr>
+                        <td>8</td>
+                        <td class="ip-cell">66.42.58.99</td>
+                        <td>Xxe</td>
+                        <td><span class="severity-badge severity-critical">CRITICAL</span></td>
+                        <td class="score-cell">95</td>
+                    </tr>
+
+                    <tr>
+                        <td>9</td>
+                        <td class="ip-cell">185.220.101.5</td>
+                        <td>Xxe</td>
+                        <td><span class="severity-badge severity-critical">CRITICAL</span></td>
+                        <td class="score-cell">95</td>
+                    </tr>
+
+                    <tr>
+                        <td>10</td>
+                        <td class="ip-cell">198.51.100.99</td>
+                        <td>Ldap Injection</td>
+                        <td><span class="severity-badge severity-high">HIGH</span></td>
+                        <td class="score-cell">85</td>
+                    </tr>
+
+                    <tr>
+                        <td>11</td>
+                        <td class="ip-cell">198.51.100.99</td>
+                        <td>Ldap Injection</td>
+                        <td><span class="severity-badge severity-high">HIGH</span></td>
+                        <td class="score-cell">85</td>
+                    </tr>
+
+                    <tr>
+                        <td>12</td>
+                        <td class="ip-cell">89.248.167.131</td>
+                        <td>Malicious Upload</td>
+                        <td><span class="severity-badge severity-high">HIGH</span></td>
+                        <td class="score-cell">85</td>
+                    </tr>
+
+                    <tr>
+                        <td>13</td>
+                        <td class="ip-cell">89.248.167.131</td>
+                        <td>Malicious Upload</td>
+                        <td><span class="severity-badge severity-high">HIGH</span></td>
+                        <td class="score-cell">85</td>
+                    </tr>
+
+                    <tr>
+                        <td>14</td>
+                        <td class="ip-cell">151.80.31.103</td>
+                        <td>Malicious Upload</td>
+                        <td><span class="severity-badge severity-high">HIGH</span></td>
+                        <td class="score-cell">85</td>
+                    </tr>
+
+                    <tr>
+                        <td>15</td>
+                        <td class="ip-cell">151.80.31.103</td>
+                        <td>Malicious Upload</td>
+                        <td><span class="severity-badge severity-high">HIGH</span></td>
+                        <td class="score-cell">85</td>
+                    </tr>
+
+                    <tr>
+                        <td>16</td>
+                        <td class="ip-cell">77.72.82.20</td>
+                        <td>Directory Listing</td>
+                        <td><span class="severity-badge severity-medium">MEDIUM</span></td>
+                        <td class="score-cell">60</td>
+                    </tr>
+
+                    <tr>
+                        <td>17</td>
+                        <td class="ip-cell">77.72.82.20</td>
+                        <td>Directory Listing</td>
+                        <td><span class="severity-badge severity-medium">MEDIUM</span></td>
+                        <td class="score-cell">60</td>
+                    </tr>
+
+                    <tr>
+                        <td>18</td>
+                        <td class="ip-cell">123.45.67.89</td>
+                        <td>Suspicious Agent</td>
+                        <td><span class="severity-badge severity-medium">MEDIUM</span></td>
+                        <td class="score-cell">70</td>
+                    </tr>
+
+                    <tr>
+                        <td>19</td>
+                        <td class="ip-cell">123.45.67.89</td>
+                        <td>Suspicious Agent</td>
+                        <td><span class="severity-badge severity-medium">MEDIUM</span></td>
+                        <td class="score-cell">70</td>
+                    </tr>
+
+                    <tr>
+                        <td>20</td>
+                        <td class="ip-cell">180.76.15.143</td>
+                        <td>Suspicious Agent</td>
+                        <td><span class="severity-badge severity-medium">MEDIUM</span></td>
+                        <td class="score-cell">70</td>
+                    </tr>
+
+                    <tr>
+                        <td>21</td>
+                        <td class="ip-cell">10.0.0.23</td>
+                        <td>Sql Injection</td>
+                        <td><span class="severity-badge severity-critical">CRITICAL</span></td>
+                        <td class="score-cell">100</td>
+                    </tr>
+
+                    <tr>
+                        <td>22</td>
+                        <td class="ip-cell">203.0.113.45</td>
+                        <td>Xss</td>
+                        <td><span class="severity-badge severity-high">HIGH</span></td>
+                        <td class="score-cell">80</td>
+                    </tr>
+
+                    <tr>
+                        <td>23</td>
+                        <td class="ip-cell">172.16.0.7</td>
+                        <td>Path Traversal</td>
+                        <td><span class="severity-badge severity-high">HIGH</span></td>
+                        <td class="score-cell">90</td>
+                    </tr>
+
+                    <tr>
+                        <td>24</td>
+                        <td class="ip-cell">45.33.32.156</td>
+                        <td>Command Injection</td>
+                        <td><span class="severity-badge severity-critical">CRITICAL</span></td>
+                        <td class="score-cell">100</td>
+                    </tr>
+
+                    <tr>
+                        <td>25</td>
+                        <td class="ip-cell">66.42.58.99</td>
+                        <td>Xxe</td>
+                        <td><span class="severity-badge severity-critical">CRITICAL</span></td>
+                        <td class="score-cell">95</td>
+                    </tr>
+
+                    <tr>
+                        <td>26</td>
+                        <td class="ip-cell">198.51.100.99</td>
+                        <td>Ldap Injection</td>
+                        <td><span class="severity-badge severity-high">HIGH</span></td>
+                        <td class="score-cell">85</td>
+                    </tr>
+
+                    <tr>
+                        <td>27</td>
+                        <td class="ip-cell">89.248.167.131</td>
+                        <td>Malicious Upload</td>
+                        <td><span class="severity-badge severity-high">HIGH</span></td>
+                        <td class="score-cell">85</td>
+                    </tr>
+
+                    <tr>
+                        <td>28</td>
+                        <td class="ip-cell">77.72.82.20</td>
+                        <td>Directory Listing</td>
+                        <td><span class="severity-badge severity-medium">MEDIUM</span></td>
+                        <td class="score-cell">60</td>
+                    </tr>
+
+                    <tr>
+                        <td>29</td>
+                        <td class="ip-cell">123.45.67.89</td>
+                        <td>Suspicious Agent</td>
+                        <td><span class="severity-badge severity-medium">MEDIUM</span></td>
+                        <td class="score-cell">70</td>
+                    </tr>
+
+                    <tr>
+                        <td>30</td>
+                        <td class="ip-cell">198.51.100.77</td>
+                        <td>Ssh Brute Force</td>
+                        <td><span class="severity-badge severity-high">HIGH</span></td>
+                        <td class="score-cell">120</td>
+                    </tr>
+
+                    <tr>
+                        <td>31</td>
+                        <td class="ip-cell">192.168.1.15</td>
+                        <td>Web Brute Force</td>
+                        <td><span class="severity-badge severity-medium">MEDIUM</span></td>
+                        <td class="score-cell">90</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            // Attack Types Chart
+            const attackCtx = document.getElementById('attackTypesChart').getContext('2d');
+            new Chart(attackCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['SQL_INJECTION', 'XSS', 'PATH_TRAVERSAL', 'COMMAND_INJECTION', 'XXE', 'LDAP_INJECTION', 'MALICIOUS_UPLOAD', 'DIRECTORY_LISTING', 'SUSPICIOUS_AGENT', 'SSH_BRUTE_FORCE', 'WEB_BRUTE_FORCE'],
+                    datasets: [{
+                        label: 'Number of Attacks',
+                        data: [2, 2, 2, 4, 4, 3, 5, 3, 4, 1, 1],
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            // Severity Chart
+            const severityCtx = document.getElementById('severityChart').getContext('2d');
+            new Chart(severityCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'],
+                    datasets: [{
+                        data: [10, 13, 8, 0],
+                        backgroundColor: [
+                            'rgba(231, 76, 60, 0.8)',
+                            'rgba(230, 126, 34, 0.8)',
+                            'rgba(243, 156, 18, 0.8)',
+                            'rgba(39, 174, 96, 0.8)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        </script>
+
+        <div class="footer">
+            <p>Generated by Simple Log Analyzer | Security Analysis Tool</p>
+        </div>
+    </div>
+</body>
+</html>

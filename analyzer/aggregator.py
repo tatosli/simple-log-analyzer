@@ -1,3 +1,27 @@
+def score_events(suspicious):
+    """Her event'e risk skoru ekle"""
+    for event in suspicious:
+        # Event türüne göre skor ata
+        event_type = event.get("type", "").lower()
+        
+        if "sql" in event_type or "command" in event_type:
+            event["score"] = 10
+        elif "xxe" in event_type:
+            event["score"] = 9
+        elif "path_traversal" in event_type or "ldap" in event_type or "upload" in event_type:
+            event["score"] = 9
+        elif "xss" in event_type:
+            event["score"] = 8
+        elif "brute_force" in event_type or "ssh" in event_type:
+            event["score"] = 7
+        elif "agent" in event_type or "directory" in event_type:
+            event["score"] = 6
+        else:
+            event["score"] = 5
+    
+    return suspicious
+
+
 def aggregate_by_ip(suspicious):
     data = {}
 
